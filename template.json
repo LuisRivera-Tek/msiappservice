@@ -4,7 +4,7 @@
     "variables": {
         "hostingPlanName":"[replace(resourceGroup().name,'.','')]",
         "siteName": "[concat(toLower(variables('hostingPlanName')), uniqueString(resourceGroup().id))]",
-        "sku":"s1",
+        "sku":"B1",
         "workerSize":"0",
         "repoURL":"https://github.com/LuisRivera-Tek/msiappservice-azuresql.git",
         "branch":"msi-azuresql"
