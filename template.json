@@ -1,57 +1,74 @@
 {
-	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-	"contentVersion": "1.0.0.0",
-	"variables": {
-		"hostingPlanName": "[replace(resourceGroup().name,'.','')]",
-		"siteName": "[concat(toLower(variables('hostingPlanName')), uniqueString(resourceGroup().id))]",
-		"sku": "S2",
-		"repoURL": "https://github.com/azureossd/appsreadynext-nodejs-easyauth.git",
-		"branch": "master",
-		"siteConfig": {
-			"linuxFxVersion": "NODE|12-lts"
-			}
-	},
-	"resources": [
-		{
-			"apiVersion": "2020-06-01",
-			"name": "[variables('hostingPlanName')]",
-			"type": "Microsoft.Web/serverfarms",
-			"location": "[resourceGroup().location]",
-			"sku": {
-				"name": "[variables('sku')]"
-			},
-			"kind": "linux",
-			"properties": {
-				"reserved": true
-			}
-		},
-		{
-			"apiVersion": "2020-06-01",
-			"name": "[variables('siteName')]",
-			"type": "Microsoft.Web/sites",
-			"location": "[resourceGroup().location]",
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
-			],
-			"properties": {
-				"siteConfig": "[variables('siteConfig')]",
-				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
-			},
-			"resources": [
-				{
-					"apiVersion": "2020-06-01",
-					"name": "web",
-					"type": "sourcecontrols",
-					"dependsOn": [
-						"[resourceId('Microsoft.Web/Sites', variables('siteName'))]"
-					],
-					"properties": {
-						"repoUrl": "[variables('repoURL')]",
-						"branch": "[variables('branch')]",
-						"IsManualIntegration": true
-					}
-				}
-			]
-		}
-	]
-}
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+        "hostingPlanName":"[replace(resourceGroup().name,'.','')]",
+        "siteName": "[concat(toLower(variables('hostingPlanName')), uniqueString(resourceGroup().id))]",
+        "sku":"s1",
+        "workerSize":"0",
+        "repoURL":"https://github.com/LuisRivera-Tek/msiappservice-azuresql.git",
+        "branch":"msi-azuresql"
+    },
+    "resources": [
+      {
+        "apiVersion": "2015-08-01",
+        "name": "[variables('hostingPlanName')]",
+        "type": "Microsoft.Web/serverfarms",
+        "location": "[resourceGroup().location]",
+        "sku": {
+          "name": "[variables('sku')]",
+          "capacity": "[variables('workerSize')]"
+        },
+        "kind": "app,linux",
+        "properties": {
+          "name": "[variables('hostingPlanName')]",
+          "reserved":true
+        }
+      },
+      {
+        "apiVersion": "2015-08-01",
+        "name": "[variables('siteName')]",
+        "type": "Microsoft.Web/sites",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
+        ],
+        "properties": {
+                "enabled": true,
+                "serverFarmId": "[variables('hostingPlanName')]",
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "linuxFxVersion": "NODE|14-lts",
+                    "alwaysOn": true,
+                    "http20Enabled": false
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None"
+            },
+        "resources": [
+          {
+            "apiVersion": "2015-08-01",
+            "name": "web",
+            "type": "sourcecontrols",
+            "dependsOn": [
+              "[resourceId('Microsoft.Web/Sites', variables('siteName'))]"
+            ],
+            "properties": {
+              "RepoUrl": "[variables('repoURL')]",
+              "branch": "[variables('branch')]",
+              "IsManualIntegration": true
+            }
+          }
+        ]
+      }
+    ]
+  }
