@@ -27,7 +27,7 @@ const sqlConfig = {
 
 
 app.get('/', function (req, res) {
-  res.send('Welcome to Luis Rivera MSI Demo! To print all the identity headers naviagte to /msi/headers. To get an access token for Key Vault please go to /msi/keyvault/accesstoken.To get a certificate from Key Vault please go to /msi/keyvault. To print data from my Azure SQL database please go to /msi/AzureSQL')
+  res.send('Welcome to Luis Rivera MSI Demo! To print all the identity headers naviagte to /msi/headers. To print data from my Azure SQL database please go to /msi/AzureSQL')
 });
 
 // Print the Identity Headers
