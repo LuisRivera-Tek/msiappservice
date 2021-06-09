@@ -74,4 +74,42 @@ Now, we connect to our Azure SQL database:
 
 
 
+In my case, my app runs the query everytime /msi/AzureSQL is called, so lets test the app:
+
+![image](https://user-images.githubusercontent.com/77988455/121381978-6dd9b080-c903-11eb-9737-060c7dbc5624.png)
+
+Did you see the same error message as me? This is because we still need to grant access to our app so it is able to access the Database.
+For that, we need to run a few queries. First lets login to SQL Server Management Studio.
+
+**Note: You have to login as an Azure Active Directory Admin to SSMS. if not, you will get the following error when trying to grant access:**
+
+![image](https://user-images.githubusercontent.com/77988455/121383522-c198c980-c904-11eb-9406-ddacf0358b22.png)
+
+
+To achieve this, you need to add yourself as an Admin on Your Azure SQL Server DB > Azure Active Directory Admin:
+
+![image](https://user-images.githubusercontent.com/77988455/121383989-1d635280-c905-11eb-9577-f0d1002e3d0c.png)
+
+Now, when logging in to SSMS, you can use the options related to Azure Active Directory to login:
+
+![image](https://user-images.githubusercontent.com/77988455/121384260-54d1ff00-c905-11eb-9f7a-565fef5c3a5c.png)
+
+Now, run the following query on your database:
+
+**Note: replace the identity name with your service principal identity name, in my case (since I used system-assigned managed identity), it is the same name as my app service**
+
+                      CREATE USER [<identity-name>] FROM EXTERNAL PROVIDER;
+                      ALTER ROLE db_datareader ADD MEMBER [<identity-name>];
+                      ALTER ROLE db_datawriter ADD MEMBER [<identity-name>];
+                      ALTER ROLE db_ddladmin ADD MEMBER [<identity-name>];
+                      GO
+                      
+
+After a few minutes/seconds, you should now be able to test the by requesting /msi/azuresql:
+
+![image](https://user-images.githubusercontent.com/77988455/121385584-797aa680-c906-11eb-80ab-3aa6c2f8ead3.png)
+
+
+
+
 
