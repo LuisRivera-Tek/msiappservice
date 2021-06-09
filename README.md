@@ -10,6 +10,8 @@ Feel free to deploy my code to Azure using the button below:
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FLuisRivera-Tek%2Fmsiappservice-azuresql%2Fmsi-azuresql%2Ftemplate.json)
 
+**Note: If you're using my app service to test MSI, make sure that you are using npm install && node --max-http-header-size=800000 server.js as your Node JS run command**
+
 
 
 Enable managed identity for your app service:
@@ -47,9 +49,27 @@ For this example, I am using the npm "mssql" library to connect to Azure SQL. So
     type:"azure-active-directory-msi-app-service"
     }
 
-  }
+           }
 
 
+Now, we connect to our Azure SQL database:
+
+
+        async function ConnectToSQL ()  {
+        try {
+            await sql.connect(sqlConfig)
+            const result = await sql.query`select * from dbo.Songs`
+            console.dir(result)
+            res.send(result)
+          
+        } catch (err) {
+            console.log("Cannot connect")
+            console.log(err)
+            res.send(err)
+        }
+    }
+    
+    ConnectToSQL();
 
 
 
