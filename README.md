@@ -105,9 +105,13 @@ Now, run the following query on your database:
                       GO
                       
 
-After a few minutes/seconds, you should now be able to test the by requesting /msi/azuresql:
+After a few minutes/seconds, you should now be able to test the app by requesting /msi/azuresql:
 
 ![image](https://user-images.githubusercontent.com/77988455/121385584-797aa680-c906-11eb-80ab-3aa6c2f8ead3.png)
+
+I hope you had fun with this exercise!
+
+
 
 
 
