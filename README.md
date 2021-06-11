@@ -43,7 +43,7 @@ For this example, I am using the npm "mssql" library to connect to Azure SQL. So
     },
     options: {
     encrypt: true, // for azure
-    trustServerCertificate: false, // change to true for local dev / self-signed certs
+    trustServerCertificate: false, 
     },
     authentication:{
     type:"azure-active-directory-msi-app-service"
