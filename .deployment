@@ -1,2 +1,2 @@
 [config]
-command = pwd
+command = cd C:\home\site\wwwroot && npm install express
