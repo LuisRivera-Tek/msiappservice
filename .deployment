@@ -1,2 +1,2 @@
 [config]
-command = npm install express 
+command = cd C:\home\site\wwwroot && npm install express 
