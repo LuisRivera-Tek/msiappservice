@@ -1,2 +1,0 @@
-[config]
-command = cd C:\home\site\wwwroot && npm install express
